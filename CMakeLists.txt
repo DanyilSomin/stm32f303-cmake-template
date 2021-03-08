@@ -80,24 +80,40 @@ file(GLOB SOURCES
   "3rd/CMSIS/*.cpp" 
   "3rd/CMSIS/*.s"
   "3rd/SPL/src/*.c"
+  "3rd/CMSIS-FreeRTOS/Source/*.c"
+  "3rd/CMSIS-FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c"
+  "3rd/CMSIS-FreeRTOS/Source/portable/MemMang/heap_4.c"
   "src/*.c"
   "src/*.cpp"
   "src/*.s")
 
 #Retrieve all locations of headers
-file(GLOB_RECURSE HEADERS
-  "3rd/SPL/inc/*.h"
-  "3rd/CMSIS/Include/*.h"
-  "src/*.h"
-  "3rd/*.h"
-  "3rd/CMSIS/Device/ST/STM32F30x/Include/*.h")
+# file(GLOB_RECURSE HEADERS
+#   "3rd/SPL/inc/*.h"
+#   "3rd/CMSIS/Include/*.h"
+#   "3rd/CMSIS-FreeRTOS/Source/include/*.h"
+#   "3rd/CMSIS-FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h"
+#   "3rd/CMSIS-FreeRTOS/Config/ARMCM/FreeRTOSConfig.h"
+#   "src/*.h"
+#   "3rd/*.h"
+#   "3rd/CMSIS/Device/ST/STM32F30x/Include/*.h")
 
 set (INCLUDE_DIRS "")
-foreach (_headerFile ${HEADERS})
-    get_filename_component(_dir ${_headerFile} PATH)
-    list (APPEND INCLUDE_DIRS ${_dir})
-endforeach()
-list(REMOVE_DUPLICATES INCLUDE_DIRS)
+
+set (INCLUDE_DIRS ${INCLUDE_DIRS} 3rd/SPL/inc/)
+set (INCLUDE_DIRS ${INCLUDE_DIRS} 3rd/CMSIS/Include/)
+set (INCLUDE_DIRS ${INCLUDE_DIRS} 3rd/CMSIS-FreeRTOS/Source/include/)
+set (INCLUDE_DIRS ${INCLUDE_DIRS} 3rd/CMSIS-FreeRTOS/Source/portable/GCC/ARM_CM4F/)
+set (INCLUDE_DIRS ${INCLUDE_DIRS} 3rd/CMSIS-FreeRTOS/Config/ARMCM/)
+set (INCLUDE_DIRS ${INCLUDE_DIRS} src/)
+set (INCLUDE_DIRS ${INCLUDE_DIRS} 3rd/)
+set (INCLUDE_DIRS ${INCLUDE_DIRS} 3rd/CMSIS/Device/ST/STM32F30x/Include/)
+
+# foreach (_headerFile ${HEADERS})
+#     get_filename_component(_dir ${_headerFile} PATH)
+#     list (APPEND INCLUDE_DIRS ${_dir})
+# endforeach()
+# list(REMOVE_DUPLICATES INCLUDE_DIRS)
 include_directories(${INCLUDE_DIRS})
 link_directories(${ARM_LIB})
 ################################## Source code END ###########################################################
